@@ -1,0 +1,42 @@
+stages:
+  - build
+  - sync
+  - package
+
+default:
+  before_script:
+    - echo login into the docker registry at $CI_REGISTRY with user $CI_REGISTRY_USER and $CI_DEPLOY_PASSWORD
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # Default branch leaves tag empty (= latest tag)
+    # All other branches are tagged with the escaped branch name (commit ref slug)
+    - echo defining tag to reflect the branch
+    - |
+      date=$(date '+%Y-%m-%d')
+      packagename="gitlab-backup"
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag=""
+        version=${date}
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+      else
+        tag=":$CI_COMMIT_REF_SLUG"
+        version=${date}-${CI_COMMIT_REF_SLUG}-${CI_PIPELINE_ID}
+        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+      fi
+
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
+    - docker push "$CI_REGISTRY_IMAGE${tag}"
+  # Run this job in a branch where a Dockerfile exists
+  rules:
+    - if: $CI_COMMIT_MESSAGE =~ /skip build/
+      when: never
+    - if: $CI_COMMIT_MESSAGE =~ /skip all/
+      when: never
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - Dockerfile

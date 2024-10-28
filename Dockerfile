@@ -1,30 +1,49 @@
-FROM ubuntu:18.04
-LABEL authors="minostauros <6764739+minostauros@users.noreply.github.com>,toxic0berliner"
+FROM alpine
+LABEL authors="toxic0berliner"
 
 # Set correct environment variables
 ENV HOME /duc
 
 # Install Dependencies
-RUN apt-get update -qq && \ 
-	apt-get install -qq wget apache2 libncursesw5-dev libcairo2-dev libpango1.0-dev build-essential libtokyocabinet-dev && \ 
-	apt-get autoremove && \
-	apt-get autoclean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache --no-check-certificate\
+        wget \
+        git \
+        rsync \
+        bash \
+        automake \
+        autoconf \
+        linux-headers \
+        pkgconfig \
+        apache2 \
+        ncurses-dev \
+        libncursesw \
+        zlib \
+        cairo-dev \
+        pango-dev \
+        build-base \
+        kyotocabinet-dev && \
+    cd /tmp && \
+    git -c http.sslVerify=false clone https://github.com/estraier/tkrzw.git &&\
+    cd /tmp/tkrzw && \
+    ./configure && \
+    make && \
+    make install && \
+    cd .. && \
+    rm -rf tkrzw
+
 
 # Install duc
 # /duc/db is a directory to mount multiple DBs, for server. duc_startup.sh look into this directory and create CGIs
 RUN mkdir /duc && \
     mkdir /duc/db && \ 
     cd /duc && \
-    wget https://github.com/zevv/duc/releases/download/1.4.5/duc-1.4.5.tar.gz && \
-    tar xzf duc-1.4.5.tar.gz && \
-    rm duc-1.4.5.tar.gz && \
-    cd duc-1.4.5 && \
+    git -c http.sslVerify=false clone https://gitlab.amato.top/dev/duc.git &&\
+    cd /duc/duc && \
     ./configure && \ 
     make && \
     make install && \
     cd .. && \
-    rm -rf duc-1.4.5
+    rm -rf duc
 
 COPY assets/000-default.conf /etc/apache2/sites-available/
 COPY assets/ducrc /etc/

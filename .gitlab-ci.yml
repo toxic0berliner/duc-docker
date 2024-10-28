@@ -29,7 +29,7 @@ build:
   services:
     - docker:dind
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" --build-arg git_user=$GITLAB_USER --build-arg git_pass=$GITLAB_PASSWORD .
     - docker push "$CI_REGISTRY_IMAGE${tag}"
   # Run this job in a branch where a Dockerfile exists
   rules:

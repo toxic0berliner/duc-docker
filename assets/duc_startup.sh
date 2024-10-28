@@ -19,12 +19,39 @@ if [ -f "$index_file" ]; then
 fi
 
 db_dir="/duc/db/"
-# Start building the index.cgi content
-index_content="#!/bin/sh
-echo 'Content-type: text/html'
-echo ''
-echo '<html><head><title>Available DUC databases</title></head><body>'"
-echo "<ul>" >> "$index_file"
+# Start building the index.html content
+# Start building the index.html content
+cat << EOF >> "$index_file"
+<html>
+<head>
+  <title>Available DUC databases</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+  body {
+    font-size: 25px
+  }
+  @media (prefers-color-scheme: light) {
+    body {
+        background-color: white;
+        color: black;
+    }
+    a {color: blue}
+    a:visited {color: purple}
+      
+  }
+  @media (prefers-color-scheme: dark) {
+    body {
+        background-color: black;
+        color: white;
+    }
+    a {color: #DBDBDB}
+    a:visited {color: #E894D5}
+  }
+  </style>
+</head>
+<body>
+  <ul>
+EOF
 
 for file in "${db_dir}"*.db; do
 	[ -f "${file}" ] || break

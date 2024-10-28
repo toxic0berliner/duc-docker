@@ -2,6 +2,7 @@
 This is a fork of [minostauros/duc-docker](https://github.com/minostauros/duc-docker) adapted to my needs to
  - list all available databases
  - avoid creating unneeded phantom volumes
+ - based on alpine
 
 
 # duc-docker

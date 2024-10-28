@@ -1,27 +1,43 @@
-# FROM alpine
-FROM debian:12
+FROM alpine
 LABEL authors="toxic0berliner"
 
 # Set correct environment variables
 ENV HOME /duc
 
-RUN apt-get update -qq && \ 
-    apt-get install -qq wget apache2 libncursesw5-dev libcairo2-dev libpango1.0-dev build-essential libtkrzw-dev git autoconf automake && \ 
-    apt-get autoremove && \
-    apt-get autoclean && \
-    rm -rf /var/lib/apt/lists/*
+# Install Dependencies
+RUN apk add --no-cache --no-check-certificate\
+        wget \
+        git \
+        rsync \
+        bash \
+        automake \
+        autoconf \
+        linux-headers \
+        pkgconfig \
+        apache2 \
+        ncurses-dev \
+        libncursesw \
+        zlib \
+        cairo-dev \
+        pango-dev \
+        build-base \
+        kyotocabinet-dev && \
+    cd /tmp && \
+    git -c http.sslVerify=false clone https://github.com/estraier/tkrzw.git &&\
+    cd /tmp/tkrzw && \
+    ./configure && \
+    make && \
+    make install && \
+    cd .. && \
+    rm -rf tkrzw
 
-ARG git_user
-ARG git_pass
-ENV GIT_USERNAME $git_user
-ENV GIT_PASSWORD $git_pass
 
 # Install duc
 # /duc/db is a directory to mount multiple DBs, for server. duc_startup.sh look into this directory and create CGIs
 RUN mkdir /duc && \
     mkdir /duc/db && \ 
     cd /duc && \
-    git -c http.sslVerify=false clone https://${GIT_USERNAME}:${GIT_PASSWORD}@gitlab.amato.top/dev/duc.git &&\
+    git -c http.sslVerify=false clone https://github.com/zevv/duc.git &&\
     cd /duc/duc && \
     autoreconf -i && \
     ./configure && \ 

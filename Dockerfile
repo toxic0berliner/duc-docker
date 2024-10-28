@@ -26,19 +26,18 @@ RUN mkdir /duc && \
     cd .. && \
     rm -rf duc-1.4.5
 
-COPY assets/index.cgi /var/www/duc/
 COPY assets/000-default.conf /etc/apache2/sites-available/
 COPY assets/ducrc /etc/
 COPY assets/duc_startup.sh /duc/
 
 #create a starter database so that we can set permissions for cgi access
-RUN mkdir /host && \
+RUN mkdir /var/www/duc && \
+    mkdir /host && \
 	duc index /host/ && \
 	chmod 777 /duc/ && \
 	chmod 777 /duc/.duc.db && \
 	a2enmod cgi && \
-	chmod +x /duc/duc_startup.sh && \
-	chmod +x /var/www/duc/index.cgi
+	chmod +x /duc/duc_startup.sh
 
 ENV DUC_CGI_OPTIONS --list --tooltip --dpi=120
 EXPOSE 80

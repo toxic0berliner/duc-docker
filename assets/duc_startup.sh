@@ -5,12 +5,17 @@
 rm -rf /run/httpd/*
 
 # Set variable for index.cgi path
-index_file="/var/www/html/index.cgi"
+index_file="/var/www/duc/index.html"
 
-# Check for existing index.cgi and empty it if it exists, ensure it is executable
+# Check for existing index.cgi and remove it
+if [ -f "/var/www/duc/index.cgi" ]; then
+  rm -f "/var/www/duc/index.cgi"
+fi
+
+# Check for existing index and empty it if it exists, ensure it is executable
 if [ -f "$index_file" ]; then
   > "$index_file"
-  chmod +x "$index_file"
+  chmod 644 "$index_file"
 fi
 
 db_dir="/duc/db/"
@@ -30,7 +35,7 @@ for file in "${db_dir}"*.db; do
 		echo "#!/bin/sh
 		/usr/local/bin/duc cgi $DUC_CGI_OPTIONS -d ${file}" > /var/www/duc/"${filename}".cgi
 		chmod +x /var/www/duc/"${filename}".cgi
-		echo "<li><a href=\"/duc/${filename}.cgi\">${filename}</a></li>" >> "$index_file"
+		echo "<li><a href=\"/${filename}.cgi\">${filename}</a></li>" >> "$index_file"
 	fi
 done
 

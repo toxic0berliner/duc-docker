@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-MAINTAINER minostauros <6764739+minostauros@users.noreply.github.com>
+LABEL authors="minostauros <6764739+minostauros@users.noreply.github.com>,toxic0berliner"
 
 # Set correct environment variables
 ENV HOME /duc
@@ -41,7 +41,6 @@ RUN mkdir /host && \
 	chmod +x /var/www/duc/index.cgi
 
 ENV DUC_CGI_OPTIONS --list --tooltip --dpi=120
-VOLUME /host /duc/db	
 EXPOSE 80
 
 WORKDIR /duc

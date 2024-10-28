@@ -1,3 +1,9 @@
+# Fork
+This is a fork of [minostauros/duc-docker](https://github.com/minostauros/duc-docker) adapted to my needs to
+ - list all available databases
+ - avoid creating unneeded phantom volumes
+
+
 # duc-docker
 ![Docker Pulls](https://img.shields.io/docker/pulls/tigerdockermediocore/duc-docker) [![Automated build on Github Actions](https://github.com/minostauros/duc-docker/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/minostauros/duc-docker/pkgs/container/duc-docker)
 

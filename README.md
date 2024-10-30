@@ -6,33 +6,17 @@ This is a fork of [minostauros/duc-docker](https://github.com/minostauros/duc-do
 
 
 # duc-docker
-![Docker Pulls](https://img.shields.io/docker/pulls/tigerdockermediocore/duc-docker) [![Automated build on Github Actions](https://github.com/minostauros/duc-docker/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/minostauros/duc-docker/pkgs/container/duc-docker)
+![Docker Pulls](https://img.shields.io/docker/pulls/toxic0berliner/duc-docker) [![Automated build on Github Actions](https://github.com/toxic0berliner/duc-docker/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/toxic0berliner/duc-docker/pkgs/container/duc-docker)
 
 Dockerized version of [duc](https://duc.zevv.nl), a disk usage analyzer.
-See [docker hub](https://hub.docker.com/r/tigerdockermediocore/duc-docker/) to pull the images.
+See [docker hub](https://hub.docker.com/r/toxic0berliner/duc-docker/) to pull the images.
 
-This image has some tweaks to achieve my personal need, but everything is straightforward (see its [github repo](https://github.com/minostauros/duc-docker/)).
+This image has some tweaks to achieve my personal need, but everything is straightforward (see its [github repo](https://github.com/toxic0berliner/duc-docker/)).
 
+# Building
+Run `docker build -t duc-docker .` then `docker run --rm -it --hostname duc-docker duc-docker bash` to get a shell in the container.
 
-## Usage
-### Apache CGI Server
-By default, this image will just start up as an apache server for duc databases. Say you have two db files named `one.db`, and `two.db` in your host directoy `/mydbs/` and a database file `/home/myduc.db` . Then running the following command
-```sh
-docker run -d -p 80:80 -v /mydbs/:/duc/db/:ro -v /home/myduc.db:/duc/.duc.db:ro tigerdockermediocore/duc-docker:latest
-```
-will provide following web pages
-  - http://localhost:80/one.cgi    <- based on /mydbs/one.db mounted as /duc/db/one.db
-  - http://localhost:80/two.cgi    <- based on /mydbs/two.db mounted as /duc/db/two.db
-  - http://localhost:80/index.cgi  <- based on /home/myduc.db mounted as /duc/.duc.db
-
-
-### duc Indexing
-Mount directories you want to index into `/host` with readonly property. For example,
-```sh
-docker run -d -v /home:/host/home:ro -v /media:/host/media:ro tigerdockermediocore/duc-docker:latest duc index /host
-```
-will index `/home` and `/media`, creating `/duc/.duc.db` inside the container. So don't forget to pull out the db file afterward!
 
 ## References
   - Original duc: https://duc.zevv.nl
-  - Reference duc-docker: https://hub.docker.com/r/digitalman2112/duc/
+  - Reference duc-docker: https://github.com/minostauros/duc-docker/

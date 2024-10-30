@@ -9,6 +9,7 @@ on:
   pull_request:
     branches:
       - 'master'
+      - 'alpine'
 
 jobs:
   docker:
@@ -55,7 +56,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.GIT_PACKAGES_TOKEN }}
+          password: ${{ secrets.TOKEN_GITHUB }}
       -
         name: Build and push
         uses: docker/build-push-action@v3

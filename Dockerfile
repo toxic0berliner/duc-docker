@@ -50,14 +50,16 @@ COPY assets/000-default.conf /etc/apache2/sites-available/
 COPY assets/ducrc /etc/
 COPY assets/duc_startup.sh /duc/
 
-#create a starter database so that we can set permissions for cgi access
+# create a starter database so that we can set permissions for cgi access
 RUN mkdir /var/www/duc && \
     mkdir /host && \
-	chmod 777 /duc/ && \
-    duc index /host/ && \
-	chmod 777 /duc/.duc.db && \
-	a2enmod cgi && \
-	chmod +x /duc/duc_startup.sh
+	chmod 777 /duc/
+
+# DEBUG BELOW IS COMMENTED TO ALLOW SUCESSFULL IMAGE BUILD TO DEBUG CURRENT ISSUES WITH DUC
+# RUN duc index /host/ && \
+# 	chmod 777 /duc/.duc.db && \
+# 	a2enmod cgi && \
+# 	chmod +x /duc/duc_startup.sh
 
 ENV DUC_CGI_OPTIONS --list --tooltip --dpi=120
 EXPOSE 80

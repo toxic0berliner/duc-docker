@@ -19,6 +19,7 @@ RUN apk add --no-cache --no-check-certificate\
         zlib \
         zstd \
         zstd-libs \
+        zstd-dev \
         gcompat \
         cairo-dev \
         pango-dev \
@@ -28,7 +29,7 @@ RUN apk add --no-cache --no-check-certificate\
     wget https://dbmx.net/tkrzw/pkg/tkrzw-1.0.25.tar.gz &&\
     tar -xf tkrzw-1.0.25.tar.gz &&\
     cd /tmp/tkrzw-1.0.25 && \
-    ./configure && \
+    ./configure --with-zstd && \
     make && \
     make install && \
     cd .. && \

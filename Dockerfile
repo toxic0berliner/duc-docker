@@ -29,7 +29,7 @@ RUN apk add --no-cache --no-check-certificate\
     wget https://dbmx.net/tkrzw/pkg/tkrzw-1.0.25.tar.gz &&\
     tar -xf tkrzw-1.0.25.tar.gz &&\
     cd /tmp/tkrzw-1.0.25 && \
-    ./configure --with-zstd && \
+    ./configure --enable-zstd && \
     make && \
     make install && \
     cd .. && \

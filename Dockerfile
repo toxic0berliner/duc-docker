@@ -39,7 +39,7 @@ RUN apk add --no-cache --no-check-certificate\
 # Build duc
 RUN mkdir /duc && \
     cd /duc && \
-    git -c http.sslVerify=false clone https://github.com/zevv/duc.git &&\
+    git -c http.sslVerify=false clone -b 1.5.0-rc2 https://github.com/zevv/duc.git &&\
     cd /duc/duc && \
     autoreconf -i && \
     autoupdate && \

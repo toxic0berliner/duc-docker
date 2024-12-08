@@ -24,7 +24,9 @@ RUN apk add --no-cache --no-check-certificate\
         cairo-dev \
         pango-dev \
         build-base \
-        kyotocabinet-dev && \
+        kyotocabinet-dev \
+        xz-dev \
+        xz-libs && \
     cd /tmp && \
     wget https://dbmx.net/tkrzw/pkg/tkrzw-1.0.25.tar.gz &&\
     tar -xf tkrzw-1.0.25.tar.gz &&\

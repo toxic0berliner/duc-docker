@@ -31,11 +31,11 @@ RUN apk add --no-cache --no-check-certificate\
     wget https://dbmx.net/tkrzw/pkg/tkrzw-1.0.25.tar.gz &&\
     tar -xf tkrzw-1.0.25.tar.gz &&\
     cd /tmp/tkrzw-1.0.25 && \
-    ./configure --enable-zstd && \
+    ./configure --enable-zstd -- enable-lzma && \
     make && \
     make install && \
     cd .. && \
-    rm -rf tkrzw
+    rm -rf tkrzw*
 
 
 # Build duc
